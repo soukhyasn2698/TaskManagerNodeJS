@@ -4,27 +4,11 @@ const cors = require("cors");
 const app = express();
 const port = 3000;
 
-// Database configuration
-const dbConfig = {
-  host: 'nodejs-mysql-db.cgpsogs846ao.us-east-1.rds.amazonaws.com', // Replace with your RDS endpoint
-  user: 'admin',
-  password: 'Shivganesh98', // Replace with your password
-  database: 'nodejs-mysql-db'
-};
-
 app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
 
 
-// Health check endpoint
-app.get('/health', (req, res) => {
-  res.status(200).json({ 
-    status: 'healthy', 
-    timestamp: new Date().toISOString(),
-    instance: process.env.HOSTNAME 
-  });
-});
 
 // Database test endpoint
 app.get('/api/db-test', async (req, res) => {
@@ -114,6 +98,3 @@ app.get("/", (req, res) => {
   res.send("Task Manager API Running");
 });
 
-app.listen(port, '0.0.0.0', () => {
-  console.log(`Server running on port ${port}`);
-});

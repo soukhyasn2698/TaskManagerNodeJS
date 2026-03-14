@@ -1,9 +1,0 @@
-CREATE DATABASE taskdb;
-
-USE taskdb;
-
-CREATE TABLE tasks (
-    taskId VARCHAR(255) PRIMARY KEY,
-    task TEXT NOT NULL,
-    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
