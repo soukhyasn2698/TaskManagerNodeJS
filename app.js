@@ -9,6 +9,11 @@ app.use(express.json());
 app.use(express.static("public"));
 
 
+// Health check endpoint
+
+app.get('/', (req, res) => {
+    res.status(200).send('OK');
+});
 
 // Database test endpoint
 app.get('/api/db-test', async (req, res) => {
@@ -97,8 +102,9 @@ app.delete("/tasks/:taskId", async (req, res) => {
 app.get("/", (req, res) => {
   res.send("Task Manager API Running");
 });
+
 const PORT = 80;
 
 app.listen(PORT, () => {
-  console.log("Server running on port "+PORT);
+  console.log("Server running on port"+PORT);
 });
