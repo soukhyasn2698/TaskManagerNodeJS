@@ -1,0 +1,119 @@
+const express = require('express');
+const mysql = require('mysql2/promise');
+const cors = require("cors");
+const app = express();
+const port = 3000;
+
+// Database configuration
+const dbConfig = {
+  host: 'nodejs-mysql-db.cgpsogs846ao.us-east-1.rds.amazonaws.com', // Replace with your RDS endpoint
+  user: 'admin',
+  password: 'Shivganesh98', // Replace with your password
+  database: 'nodejs-mysql-db'
+};
+
+app.use(cors());
+app.use(express.json());
+app.use(express.static("public"));
+
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({ 
+    status: 'healthy', 
+    timestamp: new Date().toISOString(),
+    instance: process.env.HOSTNAME 
+  });
+});
+
+// Database test endpoint
+app.get('/api/db-test', async (req, res) => {
+  try {
+    const connection = await mysql.createConnection(dbConfig);
+    await connection.execute('SELECT 1');
+    await connection.end();
+    res.json({ 
+      database: 'connected',
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('Database error:', error);
+    res.status(500).json({ 
+      database: 'error',
+      message: error.message 
+    });
+  }
+});
+
+/*
+GET ALL TASKS
+*/
+app.get("/tasks", async (req, res) => {
+  try {
+    const [rows] = await db.query("SELECT * FROM tasks");
+
+    res.json(rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to fetch tasks" });
+  }
+});
+
+/*
+ADD TASK
+*/
+app.post("/tasks", async (req, res) => {
+  try {
+    const { task } = req.body;
+
+    if (!task) {
+      return res.status(400).json({ error: "Task text required" });
+    }
+
+    const taskId = uuidv4();
+
+    await db.query(
+      "INSERT INTO tasks (taskId, task, createdAt) VALUES (?, ?, NOW())",
+      [taskId, task]
+    );
+
+    res.json({
+      message: "Task added",
+      taskId: taskId
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to add task" });
+  }
+});
+
+/*
+DELETE TASK
+*/
+app.delete("/tasks/:taskId", async (req, res) => {
+  try {
+    const taskId = req.params.taskId;
+
+    await db.query(
+      "DELETE FROM tasks WHERE taskId = ?",
+      [taskId]
+    );
+
+    res.json({
+      message: "Task deleted successfully"
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to delete task" });
+  }
+});
+
+app.get("/", (req, res) => {
+  res.send("Task Manager API Running");
+});
+
+app.listen(port, '0.0.0.0', () => {
+  console.log(`Server running on port ${port}`);
+});

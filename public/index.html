@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Task Manager</title>
+    <link rel="stylesheet" href="style.css">
+    </head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1><i class="fas fa-tasks"></i> Personal Task Manager</h1>
+            <p>Stay organized and productive with your personal task list</p>
+        </div>
+
+        <!-- Task Input Section -->
+        <div class="task-input">
+            <div class="input-group">
+                <textarea 
+                    id="bigTextBox" 
+                    placeholder="What needs to be done? Enter your task here..."
+                    rows="2"
+                ></textarea>
+                <button class="add-btn" onclick="addTask()">
+                    <i class="fas fa-plus"></i> Add Task
+                </button>
+            </div>
+        </div>
+
+        <!-- Task List Section -->
+        <div class="task-list-section">
+            <h2 class="section-title">
+                <i class="fas fa-list"></i> 
+                Your Tasks 
+                <span class="task-count" id="taskCount">0</span>
+            </h2>
+            
+            <!-- Loading indicator -->
+            <div id="loading" class="loading" style="display: none;">
+                <div class="spinner"></div>
+                <p>Loading your tasks...</p>
+            </div>
+            
+            <!-- Task list -->
+            <ul id="taskList"></ul>
+            
+            <!-- Empty state -->
+            <div id="emptyState" class="empty-state" style="display: none;">
+                <div class="empty-state-icon">📝</div>
+                <h3>No tasks yet!</h3>
+                <p>Add your first task above to get started</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
