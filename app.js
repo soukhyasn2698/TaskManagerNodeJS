@@ -100,5 +100,5 @@ app.get("/", (req, res) => {
 const PORT = 80;
 
 app.listen(PORT, () => {
-  console.log("Server running on port 3000");
+  console.log("Server running on port "+PORT);
 });
